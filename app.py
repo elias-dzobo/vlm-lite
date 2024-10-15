@@ -26,14 +26,14 @@ async def process_pdf(
     transferDocument: UploadFile = File(...),
     sitePlan: UploadFile = File(...)
     ):
-    files_to_merge = [deedOfAssignment, landTitleCertificate, transferDocument]
+    files_to_merge = [deedOfAssignment, landTitleCertificate, transferDocument, sitePlan]
     for file in files_to_merge:
-        tmp_filepath = f'vlm/{file.filename}'
+        tmp_filepath = f'temp_docs/{file.filename}'
         with open(tmp_filepath, 'wb') as temp_file:
             content = await file.read()
             temp_file.write(content)
 
-    merged_file = merge_pdf('vlm')
+    merged_file = merge_pdf('temp_docs')
     name = 'user_docs' 
  
     output = convert_pdf_to_jpg(merged_file, name)
@@ -43,22 +43,22 @@ async def process_pdf(
 
     res = get_land_details(pdf_content)
 
-    tmp_filepath = f'vlm/{sitePlan.filename}'
-    with open(tmp_filepath, 'wb') as temp_file:
-        content = await file.read()
-        temp_file.write(content)
+    # tmp_filepath = f'temp_docs/{sitePlan.filename}'
+    # with open(tmp_filepath, 'wb') as temp_file:
+    #     content = await file.read()
+    #     temp_file.write(content)
 
-    output = convert_pdf_to_jpg(tmp_filepath, name)
-    print('output path: ', output)
-    pdf_content = get_content(output)
-    print(pdf_content, ": pdf content")
-    site_plan = get_site_plan(pdf_content)    
+    # output = convert_pdf_to_jpg(tmp_filepath, name)
+    # print('output path: ', output)
+    # pdf_content = get_content(output)
+    # print(pdf_content, ": pdf content")
+    # site_plan = get_site_plan(pdf_content)    
 
     rmtree(output, ignore_errors=True)  # Recursively delete the output directory
     os.remove(tmp_filepath)  
     res = json.loads(json.dumps(res))
     
-    return res, site_plan
+    return res
 
 @app.get("/")
 async def root():
