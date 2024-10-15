@@ -16,3 +16,4 @@ google-cloud
 google-cloud-vision
 googleapis-common-protos
 googletrans
+aiofiles 
