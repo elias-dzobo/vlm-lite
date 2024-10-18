@@ -1,5 +1,4 @@
 fastapi
-langchain
 uvicorn
 python-multipart
 python-dotenv

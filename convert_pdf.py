@@ -2,6 +2,7 @@ import PyPDF2
 from PyPDF2 import PdfFileMerger, PdfReader, PdfWriter
 from pdf2image import convert_from_path
 import os
+import json
 
 def merge_pdf(file_path):
     files = []
@@ -56,5 +57,19 @@ def convert_pdf_to_jpg(pdf_path, output_dir):
 
     return output_path
 
+
+def parse_json(json_string):
+    json_string = json_string.replace("'", "") 
+    json_content = json_string[json_string.find('{'):json_string.rfind('}') + 1]
+
+    json_content = str(json_content).strip("'<>() ").replace('\'', '\"')
+
+    
+
+    print(type(json_content))
+
+    data = json.loads(json_content)
+
+    return data 
 
 #convert_pdf_to_jpg('/Users/eliasdzobo/Downloads/Land Certificate .pdf', 'land_img')
